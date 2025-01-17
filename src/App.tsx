@@ -11,7 +11,7 @@ function App() {
 
   const params: MediaParams = {
     url: mediaUrl,
-    mode: (searchParams.get('mode') as DisplayMode) || 'stretch',
+    mode: (searchParams.get('mode') as DisplayMode) || 'fill',
     width: searchParams.get('width') ? Number(searchParams.get('width')) : undefined,
     height: searchParams.get('height') ? Number(searchParams.get('height')) : undefined,
     quality: searchParams.get('quality') ? Number(searchParams.get('quality')) : undefined,
@@ -19,7 +19,7 @@ function App() {
 
   const updateParams = (newParams: MediaParams) => {
     const params = new URLSearchParams();
-    if (newParams.mode !== 'stretch') params.set('mode', newParams.mode);
+    if (newParams.mode !== 'fill') params.set('mode', newParams.mode);
     if (newParams.width) params.set('width', newParams.width.toString());
     if (newParams.height) params.set('height', newParams.height.toString());
     if (newParams.quality) params.set('quality', newParams.quality.toString());
