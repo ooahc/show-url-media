@@ -4,8 +4,30 @@ import type { MediaDisplayProps } from '../types';
 
 const MediaDisplay: React.FC<MediaDisplayProps> = ({ params }) => {
   const [error, setError] = React.useState(false);
-  const isVideo = /\.(mp4|webm)$/i.test(params.url);
-  
+  const [mediaType, setMediaType] = React.useState<'video' | 'image' | null>(null);
+
+  React.useEffect(() => {
+    // 检查文件扩展名
+    const hasVideoExt = /\.(mp4|webm|mov)$/i.test(params.url);
+    const hasImageExt = /\.(jpg|jpeg|png|gif|webp)$/i.test(params.url);
+    
+    // 如果URL没有文件扩展名，尝试通过 HEAD 请求获取 Content-Type
+    if (!hasVideoExt && !hasImageExt) {
+      fetch(params.url, { method: 'HEAD' })
+        .then(response => {
+          const contentType = response.headers.get('content-type') || '';
+          if (contentType.startsWith('video/')) {
+            setMediaType('video');
+          } else if (contentType.startsWith('image/')) {
+            setMediaType('image');
+          }
+        })
+        .catch(() => setError(true));
+    } else {
+      setMediaType(hasVideoExt ? 'video' : 'image');
+    }
+  }, [params.url]);
+
   const containerStyle: React.CSSProperties = {
     width: params.width || '100%',
     height: params.height || '100vh',
@@ -36,7 +58,7 @@ const MediaDisplay: React.FC<MediaDisplayProps> = ({ params }) => {
 
   return (
     <div style={containerStyle}>
-      {isVideo ? (
+      {mediaType === 'video' ? (
         <video
           style={mediaStyle}
           controls
@@ -48,7 +70,7 @@ const MediaDisplay: React.FC<MediaDisplayProps> = ({ params }) => {
       ) : (
         <img
           style={mediaStyle}
-          src={`${params.url}${params.quality ? `?q=${params.quality}` : ''}`}
+          src={params.url}
           alt="Media content"
           onError={handleError}
         />

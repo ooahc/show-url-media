@@ -79,7 +79,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
                 />
               </div>
 
-              {!/\.(mp4|webm)$/i.test(params.url) && (
+              {mediaType === 'image' && (
                 <div>
                   <label className="block text-sm font-medium mb-1">
                     Quality (1-100)
