@@ -36,7 +36,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
   }, [params.url]);
 
   const updateParams = (update: Partial<MediaParams>) => {
-    onUpdate({ ...update });
+    onUpdate({ ...params, ...update });
   };
 
   return (
