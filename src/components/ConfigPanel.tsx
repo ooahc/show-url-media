@@ -71,15 +71,18 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
   };
 
   const ConfigForm = () => (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium mb-2 text-white/90">
           Display Mode
         </label>
         <select
           value={params.mode}
           onChange={(e) => updateParams({ mode: e.target.value as any })}
-          className="w-full p-2 border rounded"
+          className="w-full p-2.5 rounded-lg bg-white/10 border border-white/20 
+            backdrop-blur-sm text-white placeholder-white/50
+            focus:outline-none focus:ring-2 focus:ring-white/25
+            transition-all duration-200"
         >
           <option value="fit">Fit</option>
           <option value="fill">Fill</option>
@@ -88,34 +91,40 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium mb-2 text-white/90">
           Width (pixels)
         </label>
         <input
           type="number"
           value={params.width || ''}
           onChange={(e) => updateParams({ width: e.target.value ? Number(e.target.value) : undefined })}
-          className="w-full p-2 border rounded"
+          className="w-full p-2.5 rounded-lg bg-white/10 border border-white/20 
+            backdrop-blur-sm text-white placeholder-white/50
+            focus:outline-none focus:ring-2 focus:ring-white/25
+            transition-all duration-200"
           placeholder="Auto"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-sm font-medium mb-2 text-white/90">
           Height (pixels)
         </label>
         <input
           type="number"
           value={params.height || ''}
           onChange={(e) => updateParams({ height: e.target.value ? Number(e.target.value) : undefined })}
-          className="w-full p-2 border rounded"
+          className="w-full p-2.5 rounded-lg bg-white/10 border border-white/20 
+            backdrop-blur-sm text-white placeholder-white/50
+            focus:outline-none focus:ring-2 focus:ring-white/25
+            transition-all duration-200"
           placeholder="Auto"
         />
       </div>
 
       {mediaType === 'image' && (
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium mb-2 text-white/90">
             Quality (1-100)
           </label>
           <input
@@ -124,7 +133,10 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
             max="100"
             value={params.quality || ''}
             onChange={(e) => updateParams({ quality: e.target.value ? Number(e.target.value) : undefined })}
-            className="w-full p-2 border rounded"
+            className="w-full p-2.5 rounded-lg bg-white/10 border border-white/20 
+              backdrop-blur-sm text-white placeholder-white/50
+              focus:outline-none focus:ring-2 focus:ring-white/25
+              transition-all duration-200"
             placeholder="Original"
           />
         </div>
@@ -136,18 +148,20 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
     <>
       {/* 移动端对话框 */}
       {isOpen && window.innerWidth <= 768 && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-sm rounded-lg shadow-lg">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-medium">Display Settings</h3>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-sm rounded-2xl overflow-hidden 
+            bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md
+            border border-white/20 shadow-lg">
+            <div className="flex items-center justify-between p-4 border-b border-white/20">
+              <h3 className="text-lg font-medium text-white">Display Settings</h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-gray-100 rounded-full"
+                className="p-1.5 hover:bg-white/10 rounded-full transition-colors duration-200"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-white" />
               </button>
             </div>
-            <div className="p-4">
+            <div className="p-6">
               <ConfigForm />
             </div>
           </div>
@@ -163,16 +177,21 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
       >
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`p-2 bg-white rounded-full shadow-lg transition-all duration-300 
-            ${isHovered ? 'opacity-100 hover:bg-gray-100 active:bg-gray-200 transform active:scale-95' : 'opacity-5'}
-            hover:ring-2 hover:ring-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400`}
+          className={`p-2.5 rounded-full transition-all duration-300 
+            bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md
+            border border-white/20 shadow-lg
+            ${isHovered ? 'opacity-100' : 'opacity-50'}
+            hover:scale-105 active:scale-95
+            hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/25`}
         >
-          <Settings className={`w-6 h-6 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+          <Settings className={`w-6 h-6 text-white transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
         </button>
 
         {isOpen && window.innerWidth > 768 && (
           <div 
-            className="absolute bottom-full right-0 mb-2 p-4 bg-white rounded-lg shadow-lg w-64
+            className="absolute bottom-full right-0 mb-3 p-6 w-72
+              rounded-2xl bg-gradient-to-br from-white/20 to-white/10 
+              backdrop-blur-md border border-white/20 shadow-lg
               transform transition-all duration-300 origin-bottom-right
               animate-in fade-in slide-in-from-bottom-2"
           >
