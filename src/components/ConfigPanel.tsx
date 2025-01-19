@@ -12,6 +12,8 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
   const [isHovered, setIsHovered] = React.useState(false);
   const [mediaType, setMediaType] = React.useState<'video' | 'image' | null>(null);
   const hoverTimeoutRef = React.useRef<number>();
+  const panelTimeoutRef = React.useRef<number>();
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     // 检查文件扩展名
@@ -39,6 +41,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
 
   const handleMouseEnter = () => {
     clearTimeout(hoverTimeoutRef.current);
+    clearTimeout(panelTimeoutRef.current);
     setIsHovered(true);
   };
 
@@ -46,11 +49,16 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
     hoverTimeoutRef.current = window.setTimeout(() => {
       setIsHovered(false);
     }, 1000);
+
+    panelTimeoutRef.current = window.setTimeout(() => {
+      setIsOpen(false);
+    }, 2000);
   };
 
   React.useEffect(() => {
     return () => {
       clearTimeout(hoverTimeoutRef.current);
+      clearTimeout(panelTimeoutRef.current);
     };
   }, []);
 
@@ -59,11 +67,14 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div 
+      ref={containerRef}
+      className="fixed bottom-4 right-4 z-50"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <button
         onClick={() => setIsOpen(!isOpen)}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         className={`p-2 bg-white rounded-full shadow-lg transition-all duration-300 
           ${isHovered ? 'opacity-100 hover:bg-gray-100 active:bg-gray-200 transform active:scale-95' : 'opacity-5'}
           hover:ring-2 hover:ring-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400`}
