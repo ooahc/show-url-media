@@ -70,6 +70,15 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
     onUpdate({ ...params, ...update });
   };
 
+  const handleDialogClick = (e: React.MouseEvent) => {
+    // 阻止事件冒泡到背景层
+    e.stopPropagation();
+  };
+
+  const handleBackdropClick = () => {
+    setIsOpen(false);
+  };
+
   const ConfigForm = () => (
     <div className="space-y-6">
       <div>
@@ -91,10 +100,11 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold mb-2 text-white">
+        <label className="block text-sm font-semibold mb-2 text-white" htmlFor="width-input">
           Width (pixels)
         </label>
         <input
+          id="width-input"
           type="number"
           value={params.width || ''}
           onChange={(e) => updateParams({ width: e.target.value ? Number(e.target.value) : undefined })}
@@ -107,10 +117,11 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold mb-2 text-white">
+        <label className="block text-sm font-semibold mb-2 text-white" htmlFor="height-input">
           Height (pixels)
         </label>
         <input
+          id="height-input"
           type="number"
           value={params.height || ''}
           onChange={(e) => updateParams({ height: e.target.value ? Number(e.target.value) : undefined })}
@@ -124,10 +135,11 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
 
       {mediaType === 'image' && (
         <div>
-          <label className="block text-sm font-semibold mb-2 text-white">
+          <label className="block text-sm font-semibold mb-2 text-white" htmlFor="quality-input">
             Quality (1-100)
           </label>
           <input
+            id="quality-input"
             type="number"
             min="1"
             max="100"
@@ -148,10 +160,16 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
     <>
       {/* 移动端对话框 */}
       {isOpen && window.innerWidth <= 768 && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-sm rounded-2xl overflow-hidden 
-            bg-black/40 backdrop-blur-md
-            border border-white/30 shadow-lg">
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={handleBackdropClick}
+        >
+          <div 
+            className="w-full max-w-sm rounded-2xl overflow-hidden 
+              bg-black/40 backdrop-blur-md
+              border border-white/30 shadow-lg"
+            onClick={handleDialogClick}
+          >
             <div className="flex items-center justify-between p-4 border-b border-white/30 bg-black/20">
               <h3 className="text-lg font-semibold text-white">Display Settings</h3>
               <button
