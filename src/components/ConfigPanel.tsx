@@ -9,7 +9,9 @@ interface ConfigPanelProps {
 
 const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isHovered, setIsHovered] = React.useState(false);
   const [mediaType, setMediaType] = React.useState<'video' | 'image' | null>(null);
+  const hoverTimeoutRef = React.useRef<number>();
 
   React.useEffect(() => {
     // 检查文件扩展名
@@ -35,6 +37,23 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
     }
   }, [params.url]);
 
+  const handleMouseEnter = () => {
+    clearTimeout(hoverTimeoutRef.current);
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = window.setTimeout(() => {
+      setIsHovered(false);
+    }, 1000);
+  };
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(hoverTimeoutRef.current);
+    };
+  }, []);
+
   const updateParams = (update: Partial<MediaParams>) => {
     onUpdate({ ...params, ...update });
   };
@@ -43,13 +62,21 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
     <div className="fixed bottom-4 right-4 z-50">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-100"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={`p-2 bg-white rounded-full shadow-lg transition-all duration-300 
+          ${isHovered ? 'opacity-100 hover:bg-gray-100 active:bg-gray-200 transform active:scale-95' : 'opacity-5'}
+          hover:ring-2 hover:ring-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400`}
       >
-        <Settings className="w-6 h-6" />
+        <Settings className={`w-6 h-6 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-full right-0 mb-2 p-4 bg-white rounded-lg shadow-lg w-64">
+        <div 
+          className="absolute bottom-full right-0 mb-2 p-4 bg-white rounded-lg shadow-lg w-64
+            transform transition-all duration-300 origin-bottom-right
+            animate-in fade-in slide-in-from-bottom-2"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-1">
