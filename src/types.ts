@@ -1,17 +1,13 @@
-export interface ChartData {
-  labels: string[];
-  values: number[];
+export type DisplayMode = 'fit' | 'fill' | 'stretch';
+
+export interface MediaParams {
+  url: string;
+  mode: DisplayMode;
+  width?: number;
+  height?: number;
+  quality?: number;
 }
 
-export interface Theme {
-  primary: string;
-  secondary: string;
-  background: string;
-  text: string;
-}
-
-export interface URLParams {
-  data?: ChartData;
-  theme?: 'theme1' | 'theme2';
-  hideDocs?: boolean;
+export interface MediaDisplayProps {
+  params: MediaParams;
 }
