@@ -45,7 +45,7 @@ function App() {
               <li><code>quality</code>: image quality (1-100)</li>
             </ul>
           </div>
-          <a href="https://github.com/chaozhoo" className="text-gray-600">powered by Oahc</a>
+          <a href="https://github.com/ooahc" className="text-gray-600">powered by Oahc</a>
         </div>
       </div>
     );
