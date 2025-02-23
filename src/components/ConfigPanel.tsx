@@ -200,7 +200,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ params, onUpdate }) => {
           className={`p-2.5 rounded-full transition-all duration-300 
             bg-black/40 backdrop-blur-md
             border border-white/30 shadow-lg
-            ${isHovered ? 'opacity-100' : 'opacity-20'}
+            ${isHovered ? 'opacity-100' : 'opacity-0'}
             hover:scale-105 active:scale-95
             hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50`}
         >
